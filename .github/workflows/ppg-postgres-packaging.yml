@@ -10,7 +10,7 @@ on:
 
       packaging-repo:
         description: packaging repo to be used
-        default: percona/postgres-packaging
+        default: ALTIBASE/postgres-packaging
         required: true
 
       distro:

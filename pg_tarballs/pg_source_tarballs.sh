@@ -346,7 +346,7 @@ build_pgbackrest(){
           git checkout "${PGBACKREST_BRANCH}"
         fi
 
-        wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
+        wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
 
 	build_status "ends" "pgbackrest"
 }

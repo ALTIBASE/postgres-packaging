@@ -146,7 +146,7 @@ get_srpm(){
     mv * ../SOURCES/
     cd ../SPECS
     rm -rf proj95.spec
-    wget https://raw.githubusercontent.com/percona/postgres-packaging/refs/heads/main/proj95/proj95.spec
+    wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/refs/heads/main/proj95/proj95.spec
     cd ../../
     rpmbuild -bs --define "_topdir ${WORKDIR}/rpmbuild" --define "dist .generic" rpmbuild/SPECS/proj95.spec
 

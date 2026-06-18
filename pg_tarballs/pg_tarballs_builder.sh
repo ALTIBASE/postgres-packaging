@@ -1556,7 +1556,7 @@ build_pgbackrest_ssl1() {
         git checkout "${PGBACKREST_BRANCH}"
     fi
 
-    wget_retry https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
+    wget_retry https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
 
     export PATH="${POSTGRESQL_PREFIX}/bin:$PATH"
     export PKG_CONFIG_PATH="${POSTGRESQL_PREFIX}/lib/pkgconfig"
@@ -1615,7 +1615,7 @@ build_pgbackrest_ssl3() {
         git checkout "${PGBACKREST_BRANCH}"
     fi
 
-    wget_retry https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
+    wget_retry https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/pgbackrest/pgbackrest.conf
 
     export PATH="${POSTGRESQL_PREFIX}/bin:$PATH"
     export PKG_CONFIG_PATH="${POSTGRESQL_PREFIX}/lib/pkgconfig:${DEPENDENCY_LIBS_PATH}/lib64/pkgconfig"
