@@ -26,12 +26,12 @@ PG_OIDC_VERSION=1.0
 #-------------------------------------- COMMON URLs --------------------------------------
 
 # Github Packaging Repo
-PKG_GIT_REPO="https://github.com/percona/postgres-packaging.git"
+PKG_GIT_REPO="https://github.com/ALTIBASE/postgres-packaging.git"
 PKG_GIT_BRANCH=${PG_VERSION}
 PGRPMS_GIT_REPO="https://git.postgresql.org/git/pgrpms.git"
 
 # Raw files URLs
-PKG_RAW_URL="https://raw.githubusercontent.com/percona/postgres-packaging/${PKG_GIT_BRANCH}"
+PKG_RAW_URL="https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PKG_GIT_BRANCH}"
 
 # Percona Repos
 YUM_REPO="https://repo.percona.com/yum/percona-release-latest.noarch.rpm"
