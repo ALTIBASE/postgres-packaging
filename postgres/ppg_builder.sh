@@ -247,7 +247,10 @@ build_source_deb(){
     cd ../
     quilt refresh
     dch -D unstable --force-distribution -v "${PG_VERSION}-${BUILD_RELEASE}" "Update to new Percona Platform for PostgreSQL version ${PG_VERSION}-${BUILD_RELEASE}"
-    dpkg-buildpackage -S
+    # -d: skip build-dependency check. Assembling the source package compiles
+    # nothing, so Build-Depends need not be installed here (they are required
+    # only for the binary build in build_deb).
+    dpkg-buildpackage -S -d
     return_code=$?
     if [ $return_code != 0 ]; then
         exit $return_code

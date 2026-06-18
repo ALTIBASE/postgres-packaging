@@ -92,7 +92,7 @@ rpm_deps() {
 # ---------- DEBs dependencies -----------
 deb_deps() {
   apt-get update || true
-  ENV export DEBIAN_FRONTEND=noninteractive
+  export DEBIAN_FRONTEND=noninteractive
   DEBIAN_FRONTEND=noninteractive apt-get -y install git gnupg2 curl wget lsb-release quilt
   export DEBIAN=$(lsb_release -sc)
   export ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
