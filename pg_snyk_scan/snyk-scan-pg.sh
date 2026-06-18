@@ -166,7 +166,7 @@ PG_COMMON_VERSION=259
 PG_COMMON_BRANCH="debian/259"
 
 # ppg-server-ha/ppg-server/postgres-packaging
-POSTGRES_PACKAGING_REPO="https://github.com/percona/postgres-packaging.git"
+POSTGRES_PACKAGING_REPO="https://github.com/ALTIBASE/postgres-packaging.git"
 POSTGRES16_PACKAGING_VERSION=${PG16_VERSION}
 POSTGRES16_PACKAGING_BRANCH="${PG16_VERSION}"
 
