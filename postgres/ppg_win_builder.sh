@@ -246,8 +246,8 @@ EOT
   mkdir -p createuser
   cp vc-build-x64.bat createuser/
   cd createuser/
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createuser/createuser.vcproj
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createuser/createuser.cpp
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createuser/createuser.vcproj
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createuser/createuser.cpp
 
   ./vc-build-x64.bat createuser.vcproj UPGRADE
   ./vc-build-x64.bat createuser.vcxproj Release
@@ -258,8 +258,8 @@ EOT
   mkdir -p validateuser
   cp vc-build-x64.bat validateuser/
   cd validateuser
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/validateuser/validateuser.cpp
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/validateuser/validateuser.vcproj
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/validateuser/validateuser.cpp
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/validateuser/validateuser.vcproj
 
   ./vc-build-x64.bat validateuser.vcproj UPGRADE
   ./vc-build-x64.bat validateuser.vcxproj Release
@@ -270,8 +270,8 @@ EOT
   mkdir -p getlocales
   cp vc-build-x64.bat getlocales/
   cd getlocales
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/getlocales/getlocales.cpp
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/getlocales/getlocales.vcproj
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/getlocales/getlocales.cpp
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/getlocales/getlocales.vcproj
 
   ./vc-build-x64.bat getlocales.vcproj UPGRADE
   ./vc-build-x64.bat getlocales.vcxproj Release
@@ -308,12 +308,12 @@ generate_installer_xml() {
   echo "PG_CATALOG_VERSION=$PG_CATALOG_VERSION"
   echo "PG_CONTROL_VERSION=$PG_CONTROL_VERSION"
 
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/installer.xml.in
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/pgserver.xml.in
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/installer.xml.in
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/pgserver.xml.in
 
   mkdir -p i18n
   cd i18n
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/i18n/en.lng
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/i18n/en.lng
   cd -
 
   for file in {installer,pgserver}
@@ -369,49 +369,49 @@ build_installer(){
   # Setup the installer scripts.
   mkdir -p $PG_STAGING_DIR/installer/server
   cd $PG_STAGING_DIR/installer
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/prerun_checks.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/prerun_checks.vbs
   cd -
   cd $PG_STAGING_DIR/installer/server
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/initcluster.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/startupcfg.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createshortcuts_server.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createshortcuts_clt.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/startserver.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/loadmodules.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/initcluster.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/startupcfg.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createshortcuts_server.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/createshortcuts_clt.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/startserver.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/loadmodules.vbs
   cd -
 
   cd $PG_STAGING_DIR
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/server_license.txt
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/server_license.txt
   cd -
 
   mkdir -p $PG_STAGING_DIR/doc/postgresql/html
   cd $PG_STAGING_DIR/doc
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/installation-notes.html
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/installation-notes.html
   cd -
   cd $PG_STAGING_DIR/doc/postgresql/html
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/index.html
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/release.html
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/index.html
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/release.html
   cd -
 
   # Copy in the menu pick images and XDG items
   mkdir -p $PG_STAGING_DIR/scripts/images
   cd $PG_STAGING_DIR/scripts/images
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/pg-help.ico
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/pg-reload.ico
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/pg-psql.ico
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/pg-help.ico
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/pg-reload.ico
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/pg-psql.ico
   cd -
 
   rm -rf $WD/resources
   mkdir -p $WD/resources
   cd $WD/resources
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/pg-splash.png
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/resources/pg-side.png
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/pg-splash.png
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/resources/pg-side.png
   cd -
 
   # Copy the launch scripts
   cd $PG_STAGING_DIR/scripts
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/serverctl.vbs
-  wget https://raw.githubusercontent.com/percona/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/runpsql.bat
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/serverctl.vbs
+  wget https://raw.githubusercontent.com/ALTIBASE/postgres-packaging/${PG_VERSION}/postgres/scripts/windows/runpsql.bat
   cd -
 
   # Prepare the installer XML file

@@ -6,7 +6,7 @@ hetzner-etcd-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     ETCD_VERSION: 3.5.21
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -38,7 +38,7 @@ hetzner-patroni-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: 4.0.5
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -54,7 +54,7 @@ hetzner-percona-postgis-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     GIT_BRANCH: '18.0'
     POSTGIS_GITREPO: https://github.com/postgis/postgis.git
     POSTGIS_BRANCH: stable-3.3
@@ -72,7 +72,7 @@ hetzner-pgaudit_set_user-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: REL4_1_0
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -88,7 +88,7 @@ hetzner-pgaudit-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: '17.1'
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -104,7 +104,7 @@ hetzner-pgbackrest-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: release/2.55.0
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -120,7 +120,7 @@ hetzner-pgbadger-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: v13.1
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -136,7 +136,7 @@ hetzner-pgbouncer-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: pgbouncer_1_24_1
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -152,7 +152,7 @@ hetzner-pg_cron-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: 'v1.6.2'
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -168,7 +168,7 @@ hetzner-pg_gather-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: '18.0'
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -203,7 +203,7 @@ hetzner-pgpool2-build-RELEASE:
     VERSION: 4.6.0
     GIT_REPO: https://git.postgresql.org/git/pgpool2.git
     BRANCH: V4_6_0
-    GIT_BUILD_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_BUILD_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     BUILD_BRANCH: main
     RPM_RELEASE: '1'
     DEB_RELEASE: '1'
@@ -218,7 +218,7 @@ hetzner-pgrepack-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: ver_1.5.2
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -250,7 +250,7 @@ hetzner-pgvector-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: v0.8.0
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -266,7 +266,7 @@ hetzner-postgresql-common-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: debian/280
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -298,7 +298,7 @@ hetzner-ppg-server-ha-autobuild-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
     DEB_RELEASE: '1'
@@ -313,7 +313,7 @@ hetzner-ppg-server-autobuild-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
     DEB_RELEASE: '1'
@@ -328,7 +328,7 @@ hetzner-pysyncobj-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: 0.3.10
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -344,7 +344,7 @@ hetzner-wal2json-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: wal2json_2_6
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
@@ -360,7 +360,7 @@ hetzner-ydiff-RELEASE:
   wait: true
   parallel_group: default
   parameters:
-    GIT_REPO: https://github.com/percona/postgres-packaging.git
+    GIT_REPO: https://github.com/ALTIBASE/postgres-packaging.git
     PG_BRANCH: '1.2'
     GIT_BRANCH: '18.0'
     RPM_RELEASE: '1'
