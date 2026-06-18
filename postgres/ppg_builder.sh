@@ -248,6 +248,10 @@ build_source_deb(){
     quilt refresh
     dch -D unstable --force-distribution -v "${PG_VERSION}-${BUILD_RELEASE}" "Update to new Percona Platform for PostgreSQL version ${PG_VERSION}-${BUILD_RELEASE}"
     dpkg-buildpackage -S
+    return_code=$?
+    if [ $return_code != 0 ]; then
+        exit $return_code
+    fi
     cd ../
     mkdir -p $WORKDIR/source_deb
     mkdir -p $CURDIR/source_deb
@@ -294,6 +298,10 @@ build_deb(){
     dch -m -D "${DEBIAN}" --force-distribution -v "3:${PG_VERSION}-${BUILD_RELEASE}.${DEBIAN}" 'Update distribution'
     unset $(locale|cut -d= -f1)
     dpkg-buildpackage -rfakeroot -us -uc -b
+    return_code=$?
+    if [ $return_code != 0 ]; then
+        exit $return_code
+    fi
     mkdir -p $CURDIR/deb
     mkdir -p $WORKDIR/deb
     cd $WORKDIR/
@@ -317,6 +325,7 @@ SOURCE=0
 INSTALL=0
 REVISION=0
 DEBUG=0
+NIGHTLY=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
 
 if [ ${NIGHTLY} = 1 ]; then
