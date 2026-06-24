@@ -1239,10 +1239,6 @@ then
 elif [ -f /lib64/libreadline.so.8 ];
 then
     PLL=$PLL:/lib64/libreadline.so.8
-    if [ ! -f  /lib64/libreadline.so.7 ]; then
-        ln -sf /lib64/libreadline.so.8 \$PG_LIB_PATH/libreadline.so.7
-        PLL=$PLL:\$PG_LIB_PATH/libreadline.so.7
-    fi
 elif [ -f /lib/libreadline.so.7 ];
 then
     PLL=\$PLL:/lib/libreadline.so.7
@@ -1252,28 +1248,9 @@ then
 elif [ -f /usr/lib/x86_64-linux-gnu/libreadline.so.8 ];
 then
     PLL=:/usr/lib/x86_64-linux-gnu/libreadline.so.8
-    if [ ! -f  \$PG_LIB_PATH/libreadline.so.7 ];
-    then
-        if [ -f /usr/lib/x86_64-linux-gnu/libreadline.so.8 ];
-		then
-            ln -sf /usr/lib/x86_64-linux-gnu/libreadline.so.8 \$PG_LIB_PATH/libreadline.so.7
-        else
-            ln -sf /usr/lib/x86_64-linux-gnu/libreadline.so \$PG_LIB_PATH/libreadline.so.7
-        fi
-        PLL=\$PLL:\$PG_LIB_PATH/libreadline.so.7
-    fi
 elif [ -f /usr/lib/aarch64-linux-gnu/libreadline.so.8 ];
 then
     PLL=:/usr/lib/aarch64-linux-gnu/libreadline.so.8
-    if [ ! -f \$PG_LIB_PATH/libreadline.so.7 ];
-    then
-        if [ -f /usr/lib/aarch64-linux-gnu/libreadline.so.8 ]; then
-            ln -sf /usr/lib/aarch64-linux-gnu/libreadline.so.8 \$PG_LIB_PATH/libreadline.so.7
-        else
-            ln -sf /usr/lib/aarch64-linux-gnu/libreadline.so \$PG_LIB_PATH/libreadline.so.7
-        fi
-        PLL=\$PLL:\$PG_LIB_PATH/libreadline.so.7
-    fi
 fi
 
 if [ -z "\$PLL" ];
