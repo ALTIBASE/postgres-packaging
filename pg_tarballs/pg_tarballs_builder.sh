@@ -21,12 +21,13 @@ usage () {
     cat <<EOF
 Usage: $0 [OPTIONS]
     The following options may be given :
-    --version               Tarball version
-	--use_system_ssl        Use system SSL or our own prebuilt SSL
-	--use_ssl35				Use OpenSSL 3.5
-	--build_dependencies    Build dependency packages
-    --help) usage ;;
-Example $0 --version=16.1
+    --version=<version>             Tarball version, for example 18.4
+    --use_system_ssl=<0|1>          Use system SSL instead of bundled OpenSSL
+    --use_ssl35=<0|1>               Use bundled OpenSSL 3.5
+    --include_liburing=<0|1>        Build PostgreSQL with liburing/io_uring support
+    --build_dependencies=<0|1>      Build dependency packages
+    --help                          Show this help message
+Example: $0 --version=18.4 --build_dependencies=1 --use_ssl35=1 --include_liburing=1
 EOF
         exit 1
 }
@@ -195,9 +196,25 @@ create_build_environment(){
 
 	RHEL=$(rpm --eval %rhel)
 
+	# Detect the operating system ID (e.g., "ol", "rocky")
+	OS_ID=$(grep -E '^ID=' /etc/os-release | cut -d= -f2 | tr -d '"')
+
+	# Enable the appropriate Developer/CRB repository based on the OS
+	if [ "${OS_ID}" = "ol" ]; then
+		echo "Detected Oracle Linux ${RHEL}. Enabling Oracle CodeReady Builder..."
+		yum config-manager --enable ol${RHEL}_codeready_builder
+	elif [ "${OS_ID}" = "rocky" ]; then
+		echo "Detected Rocky Linux ${RHEL}. Enabling Rocky CRB..."
+		yum config-manager --set-enabled crb
+	else
+		echo "ERROR: Unsupported operating system ('${OS_ID}'). This script only supports Oracle Linux and Rocky Linux." >&2
+		return 1
+	fi
+
+	# Proceed with the rest of the installation if the OS is supported
 	yum groupinstall -y "Development Tools"
 	yum install -y epel-release
-	yum config-manager --enable ol${RHEL}_codeready_builder
+	#yum config-manager --enable ol${RHEL}_codeready_builder
 	yum install -y meson  bzip2-devel libxml2-devel vim python3-devel perl tcl-devel pam-devel tcl python3 flex bison wget bzip2-devel chrpath libyaml-devel patchelf perl-Pod-Markdown readline-devel cmake sqlite-devel minizip-devel openssl-devel libffi-devel protobuf protobuf-devel numactl-devel pandoc opensp openjade docbook-utils docbook-style-dsssl docbook-dtds
 	yum -y install lz4 lz4-devel || true
     git clone https://github.com/ianlancetaylor/libbacktrace.git
@@ -605,7 +622,7 @@ build_proj(){
 	cd proj-${LIBPROJ_VERSION}
 	mkdir build
 	cd build/
-	LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib64:${DEPENDENCY_LIBS_PATH}/lib:$LD_LIBRARY_PATH cmake -DCMAKE_INSTALL_PREFIX=${DEPENDENCY_LIBS_PATH} -DCMAKE_INSTALL_RPATH="${DEPENDENCY_LIBS_PATH}/lib64" ..
+	LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib64:${DEPENDENCY_LIBS_PATH}/lib:$LD_LIBRARY_PATH cmake -DCMAKE_INSTALL_PREFIX=${DEPENDENCY_LIBS_PATH} -DCMAKE_INSTALL_RPATH="${DEPENDENCY_LIBS_PATH}/lib64;${DEPENDENCY_LIBS_PATH}/lib" ..
 	LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib64:${DEPENDENCY_LIBS_PATH}/lib:$LD_LIBRARY_PATH cmake --build .
 	LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib64:${DEPENDENCY_LIBS_PATH}/lib:$LD_LIBRARY_PATH cmake --build . --target install
 
@@ -1048,11 +1065,12 @@ build_python(){
 
 	PYTHON_SSL_PATH=/usr/lib64
 	PYTHON_SSL_INCLUDE=/usr/include
+	PYTHON_OPENSSL_PREFIX=/usr
 	if [ "$USE_SYSTEM_SSL" != "1" ]; then
-		yum install -y openssl3 openssl3-devel
-		PYTHON_SSL_PATH=/usr/lib64/openssl3
-		PYTHON_SSL_INCLUDE=/usr/include/openssl3
-		export PKG_CONFIG_PATH="/usr/lib64/pkgconfig"
+		PYTHON_SSL_PATH=${DEPENDENCY_LIBS_PATH}/lib64
+		PYTHON_SSL_INCLUDE=${DEPENDENCY_LIBS_PATH}/include
+		PYTHON_OPENSSL_PREFIX=${DEPENDENCY_LIBS_PATH}
+		export PKG_CONFIG_PATH="${DEPENDENCY_LIBS_PATH}/lib64/pkgconfig:${DEPENDENCY_LIBS_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 	fi
 
         mkdir -p /source
@@ -1060,7 +1078,7 @@ build_python(){
 	wget_retry https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz
 	tar xvf Python-${PYTHON_VERSION}.tar.xz
         cd Python-${PYTHON_VERSION}
-	CFLAGS="-fPIC -I${PYTHON_SSL_INCLUDE}" LDFLAGS="-fPIC -L${PYTHON_SSL_PATH}" ./configure --with-openssl=/usr --enable-shared --prefix=${PYTHON_PREFIX}
+	CFLAGS="-fPIC" LDFLAGS="-fPIC -L${PYTHON_SSL_PATH}" ./configure --with-openssl=${PYTHON_OPENSSL_PREFIX} --enable-shared --prefix=${PYTHON_PREFIX}
 	make
 	make install
 
@@ -1186,8 +1204,8 @@ build_postgres_server(){
         if [ "$INCLUDE_LIBURING" = "1" ]; then
 		export PKG_CONFIG_PATH="${DEPENDENCY_LIBS_PATH}/lib/pkgconfig"
 		CFLAGS='-O2 -DMAP_HUGETLB=0x40000' ICU_LIBS="-L${DEPENDENCY_LIBS_PATH}/lib -licuuc -licudata -licui18n" ICU_CFLAGS="-I${DEPENDENCY_LIBS_PATH}/include" ./configure --with-icu --enable-debug --with-libs=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64 --with-includes=${DEPENDENCY_LIBS_PATH}/include/libxml2:${DEPENDENCY_LIBS_PATH}/include/readline:${DEPENDENCY_LIBS_PATH}/include:${SSL_INSTALL_PATH}/include/openssl --prefix=${POSTGRESQL_PREFIX} --with-ldap --with-openssl --with-perl --with-python --with-tcl --with-pam --enable-thread-safety --with-libxml --with-libnuma --with-liburing --with-ossp-uuid --docdir=${POSTGRESQL_PREFIX}/doc/postgresql --with-libxslt --with-libedit-preferred --with-gssapi LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64:${PYTHON_PREFIX}/lib:${PERL_PREFIX}/lib:${TCL_PREFIX}/lib
-        else
-		CFLAGS='-O2 -DMAP_HUGETLB=0x40000' ICU_LIBS="-L${DEPENDENCY_LIBS_PATH}/lib -licuuc -licudata -licui18n" ICU_CFLAGS="-I${DEPENDENCY_LIBS_PATH}/include" ./configure --with-icu --enable-debug --with-libs=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64 --with-includes=${DEPENDENCY_LIBS_PATH}/include/libxml2:${DEPENDENCY_LIBS_PATH}/include/readline:${DEPENDENCY_LIBS_PATH}/include:${SSL_INSTALL_PATH}/include/openssl --prefix=${POSTGRESQL_PREFIX} --with-ldap --with-openssl --with-perl --with-python --with-tcl --with-pam --enable-thread-safety --with-libxml --with-ossp-uuid --docdir=${POSTGRESQL_PREFIX}/doc/postgresql --with-libxslt --with-libedit-preferred --with-gssapi LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64:${PYTHON_PREFIX}/lib:${PERL_PREFIX}/lib:${TCL_PREFIX}/lib
+	else
+		CFLAGS='-O2 -DMAP_HUGETLB=0x40000' ICU_LIBS="-L${DEPENDENCY_LIBS_PATH}/lib -licuuc -licudata -licui18n" ICU_CFLAGS="-I${DEPENDENCY_LIBS_PATH}/include" ./configure --with-icu --enable-debug --with-libs=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64 --with-includes=${DEPENDENCY_LIBS_PATH}/include/libxml2:${DEPENDENCY_LIBS_PATH}/include/readline:${DEPENDENCY_LIBS_PATH}/include:${SSL_INSTALL_PATH}/include/openssl --prefix=${POSTGRESQL_PREFIX} --with-ldap --with-openssl --with-perl --with-python --with-tcl --with-pam --enable-thread-safety --with-libxml --with-libnuma --with-ossp-uuid --docdir=${POSTGRESQL_PREFIX}/doc/postgresql --with-libxslt --with-libedit-preferred --with-gssapi LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib:${DEPENDENCY_LIBS_PATH}/lib64:${PYTHON_PREFIX}/lib:${PERL_PREFIX}/lib:${TCL_PREFIX}/lib
 	fi
 	LD_LIBRARY_PATH=${DEPENDENCY_LIBS_PATH}/lib64:${DEPENDENCY_LIBS_PATH}/lib:${PYTHON_PREFIX}/lib:${PERL_PREFIX}/lib:${TCL_PREFIX}/lib:$LD_LIBRARY_PATH make
 	cd src/backend
@@ -2018,6 +2036,7 @@ create_build_environment
 
 if [ "${BUILD_DEPENDENCIES}" = "1" ]; then
 
+	#if false; then
 	if [ "$USE_SYSTEM_SSL" != "1" ]; then
 		if [ "$USE_SSL35" = "1" ]; then
 			build_openssl35
@@ -2073,6 +2092,7 @@ if [ "${BUILD_DEPENDENCIES}" = "1" ]; then
 	build_libxcrypt
 	build_perl
 	build_libffi
+#fi
 	build_python
 	build_ydiff
 	build_pysyncobj
