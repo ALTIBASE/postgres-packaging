@@ -152,17 +152,17 @@ export TCL_VERSION=8.6.16
 export ETCD_VERSION=3.5.30
 export POSTGIS35_VERSION=3.5.6
 
-export POSTGRESQL_PREFIX=/opt/percona-postgresql${PG_MAJOR_VERSION}
-export PGBOUNCER_PREFIX=/opt/percona-pgbouncer
-export PGPOOL_PREFIX=/opt/percona-pgpool-II
-export PGBACKREST_PREFIX=/opt/percona-pgbackrest
-export PGBADGER_PREFIX=/opt/percona-pgbadger
-export PATRONI_PREFIX=/opt/percona-patroni
-export HAPROXY_PREFIX=/opt/percona-haproxy
-export PYTHON_PREFIX=/opt/percona-python3
-export PERL_PREFIX=/opt/percona-perl
-export TCL_PREFIX=/opt/percona-tcl
-export ETCD_PREFIX=/opt/percona-etcd
+export POSTGRESQL_PREFIX=/opt/axdb-postgresql${PG_MAJOR_VERSION}
+export PGBOUNCER_PREFIX=/opt/axdb-pgbouncer
+export PGPOOL_PREFIX=/opt/axdb-pgpool-II
+export PGBACKREST_PREFIX=/opt/axdb-pgbackrest
+export PGBADGER_PREFIX=/opt/axdb-pgbadger
+export PATRONI_PREFIX=/opt/axdb-patroni
+export HAPROXY_PREFIX=/opt/axdb-haproxy
+export PYTHON_PREFIX=/opt/axdb-python3
+export PERL_PREFIX=/opt/axdb-perl
+export TCL_PREFIX=/opt/axdb-tcl
+export ETCD_PREFIX=/opt/axdb-etcd
 export PATH=${DEPENDENCY_LIBS_PATH}/bin:${PYTHON_PREFIX}/bin:${PERL_PREFIX}/bin:${TCL_PREFIX}/bin:$PATH
 
 CWD=$(pwd)
@@ -1999,21 +1999,22 @@ create_tarball(){
         pushd /opt
 	ARCH=$(uname -m)
         # Remove compiled Python files (.pyc) from ppg tarballs
-        find ./percona-python3 -type f -name '*.pyc' -delete
-        find ./percona-python3 -type d -name '__pycache__' -exec rm -rf {} +
-        find . \( -type d -name 'percona-*' \) -exec tar czvf ${CWD}/tarballs-${PG_VERSION}/percona-postgresql-${PG_VERSION}-${SSL_VERSION}-linux-${ARCH}.tar.gz {} +
+        find ./axdb-python3 -type f -name '*.pyc' -delete
+        find ./axdb-python3 -type d -name '__pycache__' -exec rm -rf {} +
+        find . \( -type d -name 'axdb-*' \) -exec tar czvf ${CWD}/tarballs-${PG_VERSION}/axdb-enterprise-release-${PG_VERSION}-${SSL_VERSION}-linux-${ARCH}.tar.gz {} +
         popd
 }
 
 ################
 #     Main     #
 ################
+#if false; then # it is used to skip the build of dependencies if they are already built and available in the specified path
+#fi
 
 create_build_environment
 
 if [ "${BUILD_DEPENDENCIES}" = "1" ]; then
 
-	#if false; then
 	if [ "$USE_SYSTEM_SSL" != "1" ]; then
 		if [ "$USE_SSL35" = "1" ]; then
 			build_openssl35
@@ -2069,7 +2070,6 @@ if [ "${BUILD_DEPENDENCIES}" = "1" ]; then
 	build_libxcrypt
 	build_perl
 	build_libffi
-#fi
 	build_python
 	build_ydiff
 	build_pysyncobj
